@@ -1,0 +1,16 @@
+# Environment variables - never upload to GitHub
+.env
+
+# Anaconda virtual environment folder
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# Windows system files
+Thumbs.db
+Desktop.ini
