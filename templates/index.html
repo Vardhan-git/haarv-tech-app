@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Haarv Tech — AI Learning Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo-icon">HT</div>
+  <button class="btn-gs">Get Started</button>
+</nav>
+
+<canvas id="c"></canvas>
+
+<div class="hero">
+
+  <div class="greet-wrap">
+    <span class="greet-icon" id="gi"></span>
+    <span class="greet-text" id="gt"></span>
+  </div>
+
+
+  <div class="sbox">
+    <div class="sbar">
+      <input class="sinput" type="text" placeholder="Ask anything..."/>
+      <button class="sbtn">→</button>
+    </div>
+    <div class="hint">Try — <span>"Explain SQL JOINs"</span> &nbsp;·&nbsp; <span>"Debug my Python loop"</span> &nbsp;·&nbsp; <span>"Quiz me on React"</span></div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
