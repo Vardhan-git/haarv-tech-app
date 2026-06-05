@@ -126,3 +126,56 @@ function frame() {
 }
 
 frame();
+
+// SEARCH FUNCTIONALITY
+const searchInput = document.getElementById('searchInput');
+const searchBtn   = document.getElementById('searchBtn');
+const answerWrap  = document.getElementById('answerWrap');
+const answerContent = document.getElementById('answerContent');
+const answerStatus  = document.getElementById('answerStatus');
+
+async function askQuestion() {
+  const question = searchInput.value.trim();
+  if (!question) return;
+
+  // show loading
+  answerWrap.classList.add('visible');
+  answerStatus.textContent = 'Thinking...';
+  answerContent.innerHTML  = `
+    <div class="dot-pulse">
+      <span></span><span></span><span></span>
+    </div>`;
+  searchBtn.disabled = true;
+
+  try {
+    const res  = await fetch('/ask', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ question })
+    });
+
+    const data = await res.json();
+
+    if (data.answer) {
+      answerStatus.textContent  = 'Done';
+      answerContent.textContent = data.answer;
+    } else {
+      answerStatus.textContent  = 'Error';
+      answerContent.textContent = 'Something went wrong. Please try again.';
+    }
+
+  } catch (err) {
+    answerStatus.textContent  = 'Error';
+    answerContent.textContent = 'Could not connect. Make sure the server is running.';
+  }
+
+  searchBtn.disabled = false;
+}
+
+// click button
+searchBtn.addEventListener('click', askQuestion);
+
+// press Enter
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') askQuestion();
+});

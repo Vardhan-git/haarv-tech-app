@@ -23,13 +23,24 @@
     <span class="greet-text" id="gt"></span>
   </div>
 
-
   <div class="sbox">
     <div class="sbar">
-      <input class="sinput" type="text" placeholder="Ask anything..."/>
-      <button class="sbtn">→</button>
+      <input class="sinput" id="searchInput" type="text" placeholder="Ask anything..."/>
+      <button class="sbtn" id="searchBtn">→</button>
     </div>
     <div class="hint">Try — <span>"Explain SQL JOINs"</span> &nbsp;·&nbsp; <span>"Debug my Python loop"</span> &nbsp;·&nbsp; <span>"Quiz me on React"</span></div>
+  </div>
+
+  <!-- ANSWER AREA -->
+  <div class="answer-wrap" id="answerWrap">
+    <div class="answer-box" id="answerBox">
+      <div class="answer-header">
+        <div class="answer-avatar">HT</div>
+        <div class="answer-label">Haarv Tech AI</div>
+        <div class="answer-status" id="answerStatus">Thinking...</div>
+      </div>
+      <div class="answer-content" id="answerContent"></div>
+    </div>
   </div>
 
 </div>
