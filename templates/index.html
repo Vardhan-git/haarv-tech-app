@@ -6,6 +6,7 @@
   <title>Haarv Tech — AI Learning Platform</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -34,9 +35,9 @@
 
   <!-- TOOL ICONS -->
   <div class="tools-row" id="toolsRow">
-    <div class="tool-icon" title="Study Buddy">
-      <i class="ti ti-messages"></i>
-    </div>
+    <div class="tool-icon" title="Study Buddy" onclick="window.location.href='/study-buddy'">
+  <i class="ti ti-messages"></i>
+</div>
     <div class="tool-icon" title="Quiz Generator">
       <i class="ti ti-brain"></i>
     </div>

@@ -26,6 +26,10 @@ Your style:
 def home():
     return render_template("index.html")
 
+@app.route("/study-buddy")
+def study_buddy():
+    return render_template("study_buddy.html")
+
 @app.route("/ask", methods=["POST"])
 def ask():
     data     = request.get_json()

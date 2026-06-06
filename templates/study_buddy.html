@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Study Buddy — Haarv Tech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/study_buddy.css') }}">
+</head>
+<body>
+
+<!-- ONBOARDING SCREEN -->
+<div class="onboard" id="onboard">
+  <div class="onboard-box">
+
+    <lottie-player
+      src="{{ url_for('static', filename='animations/waving.json') }}"
+      background="transparent"
+      speed="1"
+      style="width:180px;height:180px;margin:0 auto"
+      loop
+      autoplay>
+    </lottie-player>
+
+    <h1 class="onboard-title">Meet your Study Buddy</h1>
+    <p class="onboard-sub">Tell me a bit about yourself so I can help you better.</p>
+
+    <div class="level-grid">
+      <div class="level-card" onclick="selectLevel('highschool')" data-level="highschool">
+        <div class="level-icon">🎒</div>
+        <div class="level-name">High School</div>
+        <div class="level-desc">Under 18 · Learning the basics</div>
+      </div>
+      <div class="level-card" onclick="selectLevel('college')" data-level="college">
+        <div class="level-icon">🎓</div>
+        <div class="level-name">College / University</div>
+        <div class="level-desc">Degree student · Intermediate level</div>
+      </div>
+      <div class="level-card" onclick="selectLevel('professional')" data-level="professional">
+        <div class="level-icon">💼</div>
+        <div class="level-name">Working Professional</div>
+        <div class="level-desc">Upskilling · Advanced topics</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CHAT SCREEN -->
+<div class="chat-screen" id="chatScreen">
+
+  <!-- LEFT PANEL — CHARACTER -->
+  <div class="char-panel">
+    <div class="char-top">
+      <a href="/" class="back-btn"><i class="ti ti-arrow-left"></i> Home</a>
+      <div class="char-name" id="charName">Study Buddy</div>
+    </div>
+
+    <lottie-player
+      id="charAnim"
+      src="{{ url_for('static', filename='animations/waving.json') }}"
+      background="transparent"
+      speed="1"
+      style="width:220px;height:220px;margin:0 auto"
+      loop
+      autoplay>
+    </lottie-player>
+
+    <div class="char-greeting" id="charGreeting"></div>
+    <div class="char-level" id="charLevel"></div>
+
+    <!-- POINTS -->
+    <div class="points-box">
+      <div class="points-row">
+        <i class="ti ti-star-filled" style="color:#f59e0b"></i>
+        <span class="points-label">Points</span>
+        <span class="points-val" id="pointsVal">0</span>
+      </div>
+      <div class="points-row">
+        <i class="ti ti-flame" style="color:#ef4444"></i>
+        <span class="points-label">Streak</span>
+        <span class="points-val" id="streakVal">0</span>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="badges-box" id="badgesBox">
+      <div class="badges-title">Badges</div>
+      <div class="badges-row" id="badgesRow">
+        <div class="badge-item locked" title="Ask your first question">❓</div>
+        <div class="badge-item locked" title="Ask 5 questions">🔥</div>
+        <div class="badge-item locked" title="Ask 10 questions">⚡</div>
+        <div class="badge-item locked" title="Python question">🐍</div>
+        <div class="badge-item locked" title="SQL question">🗄️</div>
+        <div class="badge-item locked" title="React question">⚛️</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL — CHAT -->
+  <div class="chat-panel">
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="welcome-msg" id="welcomeMsg"></div>
+    </div>
+
+    <div class="chat-input-wrap">
+      <div class="chat-input-bar">
+        <textarea
+          class="chat-input"
+          id="chatInput"
+          placeholder="Ask me anything..."
+          rows="1"></textarea>
+        <button class="chat-send" id="chatSend">
+          <i class="ti ti-send"></i>
+        </button>
+      </div>
+      <div class="chat-actions">
+        <button class="action-btn" id="understood">
+          <i class="ti ti-check"></i> I understood this
+        </button>
+        <button class="action-btn" onclick="clearChat()">
+          <i class="ti ti-trash"></i> Clear chat
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/study_buddy.js') }}"></script>
+</body>
+</html>
