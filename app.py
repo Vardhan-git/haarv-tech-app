@@ -1,14 +1,26 @@
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-import anthropic
+from google import genai
 import os
 
 load_dotenv()
 
 app = Flask(__name__)
 
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+SYSTEM_PROMPT = """You are Haarv Tech AI — a friendly, expert coding tutor
+for college students learning Python, SQL, React JS, Power BI and Tableau
+in Vancouver, Canada.
+
+Your style:
+- Clear and direct — no fluff
+- Use simple language students actually understand
+- Give real examples when explaining concepts
+- If someone shares broken code, find the bug and explain the fix
+- Keep answers focused and well structured
+- Never be condescending — every question is valid"""
 
 @app.route("/")
 def home():
@@ -22,27 +34,16 @@ def ask():
     if not question:
         return jsonify({"error": "No question provided"}), 400
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
-        system="""You are Haarv Tech AI — a friendly, expert coding tutor 
-for college students learning Python, SQL, React JS, Power BI and Tableau 
-in Vancouver, Canada. 
+    try:
+        response = client.models.generate_content(
+            model="models/gemini-2.0-flash-lite",
+            contents=SYSTEM_PROMPT + "\n\nStudent question: " + question
+        )
+        answer = response.text
+        return jsonify({"answer": answer})
 
-Your style:
-- Clear and direct — no fluff
-- Use simple language students actually understand
-- Give real examples when explaining concepts
-- If someone shares broken code, find the bug and explain the fix
-- Keep answers focused and well structured
-- Never be condescending — every question is valid""",
-        messages=[
-            {"role": "user", "content": question}
-        ]
-    )
-
-    answer = message.content[0].text
-    return jsonify({"answer": answer})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
