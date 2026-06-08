@@ -5,133 +5,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Study Buddy — Haarv Tech</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/study_buddy.css') }}">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      width:100%;height:100%;overflow:hidden;
+      font-family:'Inter',sans-serif;
+      background:radial-gradient(ellipse 120% 100% at 50% 0%,#0d0d1a 0%,#0a0a14 40%,#080810 100%);
+    }
+
+    /* AURORA */
+    .aurora{
+      position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 30%,rgba(108,99,255,.15) 0%,transparent 70%),
+        radial-gradient(ellipse 50% 35% at 80% 20%,rgba(37,99,235,.12) 0%,transparent 70%),
+        radial-gradient(ellipse 70% 50% at 50% 80%,rgba(167,139,250,.1) 0%,transparent 70%);
+      animation:auroraPulse 6s ease infinite;
+    }
+    @keyframes auroraPulse{0%,100%{opacity:.7}50%{opacity:1}}
+
+    /* NEURAL CANVAS */
+    canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+    /* HERO */
+    .hero{
+      position:relative;z-index:10;
+      width:100%;height:100vh;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+    }
+
+    /* BOOK CONTAINER */
+    .book-container{
+      position:relative;
+      display:flex;align-items:center;justify-content:center;
+      width:40vw;max-width:480px;min-width:280px;
+      opacity:0;
+      animation:fadeUp 1s ease forwards .5s;
+    }
+
+    /* GLOW BEHIND BOOK */
+    .book-glow{
+      position:absolute;
+      width:100%;height:100%;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(124,111,255,.35) 0%,rgba(37,99,235,.15) 40%,transparent 70%);
+      filter:blur(24px);
+      animation:glowBreathe 4s ease-in-out infinite;
+      z-index:0;
+      transform:scale(1.3);
+    }
+    @keyframes glowBreathe{
+      0%,100%{opacity:.6;transform:scale(1.3)}
+      50%{opacity:1;transform:scale(1.5)}
+    }
+
+   .book-img{
+  position:relative;z-index:2;
+  width:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 0 32px rgba(124,111,255,.5)) drop-shadow(0 0 64px rgba(37,99,235,.3));
+  animation:bookFloat 4s ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+    @keyframes bookFloat{
+      0%,100%{transform:translateY(0px)}
+      50%{transform:translateY(-16px)}
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(30px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+  </style>
 </head>
 <body>
 
-<!-- ONBOARDING SCREEN -->
-<div class="onboard" id="onboard">
-  <div class="onboard-box">
+<div class="aurora"></div>
+<canvas id="c"></canvas>
 
-    <lottie-player
-      src="{{ url_for('static', filename='animations/waving.json') }}"
-      background="transparent"
-      speed="1"
-      style="width:180px;height:180px;margin:0 auto"
-      loop
-      autoplay>
-    </lottie-player>
-
-    <h1 class="onboard-title">Meet your Study Buddy</h1>
-    <p class="onboard-sub">Tell me a bit about yourself so I can help you better.</p>
-
-    <div class="level-grid">
-      <div class="level-card" onclick="selectLevel('highschool')" data-level="highschool">
-        <div class="level-icon">🎒</div>
-        <div class="level-name">High School</div>
-        <div class="level-desc">Under 18 · Learning the basics</div>
-      </div>
-      <div class="level-card" onclick="selectLevel('college')" data-level="college">
-        <div class="level-icon">🎓</div>
-        <div class="level-name">College / University</div>
-        <div class="level-desc">Degree student · Intermediate level</div>
-      </div>
-      <div class="level-card" onclick="selectLevel('professional')" data-level="professional">
-        <div class="level-icon">💼</div>
-        <div class="level-name">Working Professional</div>
-        <div class="level-desc">Upskilling · Advanced topics</div>
-      </div>
-    </div>
-
+<div class="hero">
+  <div class="book-container">
+    <div class="book-glow"></div>
+    <img
+      src="{{ url_for('static', filename='images/knowledgebook.png') }}"
+      class="book-img"
+      alt="Knowledge Book"
+    />
   </div>
 </div>
 
-<!-- CHAT SCREEN -->
-<div class="chat-screen" id="chatScreen">
-
-  <!-- LEFT PANEL — CHARACTER -->
-  <div class="char-panel">
-    <div class="char-top">
-      <a href="/" class="back-btn"><i class="ti ti-arrow-left"></i> Home</a>
-      <div class="char-name" id="charName">Study Buddy</div>
-    </div>
-
-    <lottie-player
-      id="charAnim"
-      src="{{ url_for('static', filename='animations/waving.json') }}"
-      background="transparent"
-      speed="1"
-      style="width:220px;height:220px;margin:0 auto"
-      loop
-      autoplay>
-    </lottie-player>
-
-    <div class="char-greeting" id="charGreeting"></div>
-    <div class="char-level" id="charLevel"></div>
-
-    <!-- POINTS -->
-    <div class="points-box">
-      <div class="points-row">
-        <i class="ti ti-star-filled" style="color:#f59e0b"></i>
-        <span class="points-label">Points</span>
-        <span class="points-val" id="pointsVal">0</span>
-      </div>
-      <div class="points-row">
-        <i class="ti ti-flame" style="color:#ef4444"></i>
-        <span class="points-label">Streak</span>
-        <span class="points-val" id="streakVal">0</span>
-      </div>
-    </div>
-
-    <!-- BADGES -->
-    <div class="badges-box" id="badgesBox">
-      <div class="badges-title">Badges</div>
-      <div class="badges-row" id="badgesRow">
-        <div class="badge-item locked" title="Ask your first question">❓</div>
-        <div class="badge-item locked" title="Ask 5 questions">🔥</div>
-        <div class="badge-item locked" title="Ask 10 questions">⚡</div>
-        <div class="badge-item locked" title="Python question">🐍</div>
-        <div class="badge-item locked" title="SQL question">🗄️</div>
-        <div class="badge-item locked" title="React question">⚛️</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- RIGHT PANEL — CHAT -->
-  <div class="chat-panel">
-
-    <div class="chat-messages" id="chatMessages">
-      <div class="welcome-msg" id="welcomeMsg"></div>
-    </div>
-
-    <div class="chat-input-wrap">
-      <div class="chat-input-bar">
-        <textarea
-          class="chat-input"
-          id="chatInput"
-          placeholder="Ask me anything..."
-          rows="1"></textarea>
-        <button class="chat-send" id="chatSend">
-          <i class="ti ti-send"></i>
-        </button>
-      </div>
-      <div class="chat-actions">
-        <button class="action-btn" id="understood">
-          <i class="ti ti-check"></i> I understood this
-        </button>
-        <button class="action-btn" onclick="clearChat()">
-          <i class="ti ti-trash"></i> Clear chat
-        </button>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<script src="{{ url_for('static', filename='js/study_buddy.js') }}"></script>
+<script>
+const cv=document.getElementById('c'),cx=cv.getContext('2d');
+function rs(){cv.width=window.innerWidth;cv.height=window.innerHeight;}
+rs();window.addEventListener('resize',rs);
+const nodes=[];
+for(let i=0;i<55;i++) nodes.push({
+  x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+  vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+  r:Math.random()*1.5+.5,op:Math.random()*.12+.03,
+  col:Math.random()>.5?'124,111,255':'37,99,235'
+});
+function draw(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<130){
+        cx.globalAlpha=.06*(1-d/130);
+        cx.strokeStyle='rgba(124,111,255,1)';cx.lineWidth=.5;
+        cx.beginPath();cx.moveTo(nodes[i].x,nodes[i].y);cx.lineTo(nodes[j].x,nodes[j].y);cx.stroke();
+      }
+    }
+  }
+  nodes.forEach(n=>{
+    cx.globalAlpha=n.op;
+    cx.beginPath();cx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    cx.fillStyle=`rgba(${n.col},1)`;cx.fill();
+    n.x+=n.vx;n.y+=n.vy;
+    if(n.x<0)n.x=cv.width;if(n.x>cv.width)n.x=0;
+    if(n.y<0)n.y=cv.height;if(n.y>cv.height)n.y=0;
+  });
+  cx.globalAlpha=1;requestAnimationFrame(draw);
+}
+draw();
+</script>
 </body>
 </html>
